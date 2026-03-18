@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Very Smart Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <img id='logo' src="img/verysmart-calc-flat.svg" alt="VerySmart™ Calc logo">
+    </header>
+
+    <div id="wrapper">
+        <section id="computationSection">
+            <h2>Computation</h2>
+            <div class="subsection">
+                <fieldset>
+                    <legend>Expression / polynomial</legend>
+                    <label for="polynomialFunction">Enter expression (for x, use x):</label><br />
+                    <input id='polynomialFunction' type="text" placeholder="e.g., 2 + 3 or x^2 + 1">
+                    <div class="input-row">
+                        <label for="polynomialVariable">Value of x:</label>
+                        <input id="polynomialVariable" type="number" placeholder="optional">
+                    </div>
+                    <button id="computeBtn" type="button">Compute</button>
+                </fieldset>
+            </div>
+
+            <div class="subsection">
+                <fieldset>
+                    <legend>K-digit arithmetic</legend>
+                    <label for="kDigitMethod">Method:</label><br>
+                    <input id="kChop" value="chop" name="kMethod" type="radio" checked>
+                    <label for="kChop">Chop</label>
+                    <input id="kRound" value="round" name="kMethod" type="radio">
+                    <label for="kRound">Round</label>
+                    <br>
+                    <label for="kDigits">K (significant digits):</label><br>
+                    <input id="kDigits" type="number" placeholder="2"><br>
+                    <button id="evaluateKDigitBtn" type="button">Evaluate K-digit</button>
+                </fieldset>
+            </div>
+
+            <section id="section2">
+                <fieldset id='cedrick'>
+                    <legend>Chop or round result:</legend>
+                    <input id='chop' value='chop' name='method' type="radio" checked>
+                    <label for="chop">Chop</label>
+                    <input id='round' value="round" name="method" type="radio">
+                    <label for="round">Round</label>
+                </fieldset>
+                <fieldset>
+                    <label for="significantDigits">Number of significant digits:</label>
+                    <input id='significantDigits' type="number" placeholder="2">
+                </fieldset>
+            </section>
+            <button id="applyChopRoundBtn" type="button">Apply Chop/Round</button>
+
+            <div id="resultContainer" class="result-section">
+                <h2>Computed Result</h2>
+                <div class="result-row"><label>Result:</label> <input id="result" type="text" title="Computed result" readonly></div>
+                <div class="result-row"><label>K-digit Result:</label> <input id="kDigitResult" type="text" title="K-digit arithmetic result" readonly></div>
+                <div class="result-row"><label>Absolute Error:</label> <input id="absoluteErrorResult" type="text" title="Absolute error" readonly></div>
+                <div class="result-row"><label>Relative Error:</label> <input id="relativeErrorResult" type="text" title="Relative error" readonly></div>
+                <div class="result-row"><label>Maximum Absolute Error:</label> <input id="maximumErrorResult" type="text" title="Maximum absolute error" readonly></div>
+                <div class="result-row"><label>Significant Digits:</label> <input id="significantDigitsResult" type="text" title="Significant digits used" readonly></div>
+            </div>
+        </section>
+        <section id="section4">
+            <h2>Error Evaluation from P and P*</h2>
+            <fieldset>
+                <div class="subsection">
+                    <label for="pValue">Enter true value P:</label> <br />
+                    <input id="pValue" type="number" placeholder="P">
+                </div>
+                <div class="subsection">
+                    <label for="pStarValue">Enter approximate value P*:</label> <br />
+                    <input id="pStarValue" type="number" placeholder="P*">
+                </div>
+                <div class="subsection">
+                    <label for="extraSignificantDigits">Number of significant digits:</label> <br />
+                    <input id="extraSignificantDigits" type="number" placeholder="2">
+                </div>
+            </fieldset>
+            <button id="extraBtn" type="button">Evaluate Errors</button>
+            <div id="extraResultContainer" class="result-section">
+                <div class="result-row"><label>P*:</label> <input id="extraPStar" type="text" title="Approximate value P*" readonly></div>
+                <div class="result-row"><label>Absolute Error:</label> <input id="extraAbsoluteError" type="text" title="Absolute error" readonly></div>
+                <div class="result-row"><label>Relative Error:</label> <input id="extraRelativeError" type="text" title="Relative error" readonly></div>
+                <div class="result-row"><label>Maximum Absolute Error:</label> <input id="extraMaximumError" type="text" title="Maximum absolute error" readonly></div>
+                <div class="result-row"><label>Significant Digits:</label> <input id="extraSignificantDigitsResult" type="text" title="Significant digits used" readonly></div>
+            </div>
+        </section>
+        <section id="section5">
+            <h2>Binary Conversion</h2>
+            <fieldset>
+                <div class="subsection">
+                    <label for="decimalInput">Enter decimal number:</label> <br />
+                    <input id="decimalInput" type="number" placeholder="Decimal">
+                </div>
+                <div class="subsection">
+                    <label for="binaryInput">Enter binary number:</label> <br />
+                    <input id="binaryInput" type="text" placeholder="Binary">
+                </div>
+                <div class="subsection">
+                    <label>Interpret binary as:</label><br>
+                    <input id="binPlain" name="binMode" type="radio" value="plain" checked>
+                    <label for="binPlain">Plain binary (int/frac)</label><br>
+                    <input id="binIEEE32" name="binMode" type="radio" value="ieee32">
+                    <label for="binIEEE32">IEEE 754 (32-bit float)</label><br>
+                    <input id="binIEEE64" name="binMode" type="radio" value="ieee64">
+                    <label for="binIEEE64">IEEE 754 (64-bit double)</label>
+                </div>
+            </fieldset>
+            <button id="decToBinBtn" type="button">Decimal to Binary</button>
+            <button id="binToDecBtn" type="button">Binary to Decimal</button>
+            <div id="binaryResultContainer" class="result-section">
+                <div class="result-row"><label>Decimal Result:</label> <input id="binaryDecimalResult" type="text" title="Decimal result" readonly></div>
+                <div class="result-row"><label>Binary Result:</label> <input id="binaryBinaryResult" type="text" title="Binary result" readonly></div>
+                <div class="result-row"><label>IEEE Interpretation:</label> <input id="binaryIEEEResult" type="text" title="IEEE 754 interpretation" readonly></div>
+            </div>
+        </section>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.1/math.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

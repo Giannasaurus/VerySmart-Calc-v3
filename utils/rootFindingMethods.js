@@ -23,7 +23,7 @@ function formatValue(val, sigDigits, mode) {
 }
 
 // BISECTION METHOD f: the function, a: start, b: end, sigs: digits, mode: 'round'/'chop', tol: tolerance
-function runBisection(f, a, b, sigs, mode, tol) {
+function runBisection(f, a, b, sigs, mode, tol, errorConstraint) {
     let iterationTable = [];
     let fa = f(a);
     let fb = f(b);
@@ -36,42 +36,60 @@ function runBisection(f, a, b, sigs, mode, tol) {
     if (fa * fb >= 0) { //Checks if root exists or not
         return { error: "Signs are the same. No root guaranteed in this interval." };
     }
+    if (errorConstraint !== undefined && errorConstraint <= 0) {
+        return { error: "Error constraint must be greater than zero." };
+    }
 	let maxIterations = Math.ceil(Math.log2(Math.abs(b - a) / tol)); //checks how many interation for the system to load
-    maxIterations = Math.max(1, Math.min(maxIterations, 1000));
+    maxIterations = Math.max(1, Math.min(maxIterations + 100, 1000));
     let currentA = a;
     let currentB = b;
     let root = 0;
+    let finalErrorBound = Infinity;
     for (let i = 1; i <= maxIterations; i++) {
 	let mid = (currentA + currentB) / 2; //finding midpoint
-	let midFormatted = formatValue(mid, sigs, mode);
-        let rawFMid = f(midFormatted);
+        let rawFMid = f(mid);
         if (!Number.isFinite(rawFMid)) {
             return { error: "Function became non-finite during bisection.", table: iterationTable };
         }
         let fMid = formatValue(rawFMid, sigs, mode);
+        let nextA = currentA;
+        let nextB = currentB;
+        if (rawFMid === 0) {
+            nextA = mid;
+            nextB = mid;
+        } else if (f(currentA) * rawFMid < 0) {
+            nextB = mid;
+        } else {
+            nextA = mid;
+        }
+        let width = Math.abs(nextB - nextA);
+        let denominator = Math.abs(nextA);
+        let errorBound = denominator === 0 ? Infinity : width / denominator;
+        finalErrorBound = errorBound;
 	iterationTable.push({
             iter: i,
-            a: formatValue(currentA, sigs, mode),
-            b: formatValue(currentB, sigs, mode),
-            mid: midFormatted,
-            fMid: fMid
+            a: currentA,
+            b: currentB,
+            mid: mid,
+            fMid: rawFMid,
+            errorBound: errorBound
         });
-	if (fMid === 0 || (currentB - currentA) / 2 < tol) {
-            root = midFormatted;
+        let toleranceMet = rawFMid === 0 || width / 2 < tol;
+        let errorConstraintMet = errorConstraint === undefined || errorBound <= errorConstraint;
+	if (toleranceMet && errorConstraintMet) {
+            root = mid;
             break;
         }
-	if (f(currentA) * fMid < 0) {
-            currentB = midFormatted;
-        } else {
-            currentA = midFormatted;
-        }
-        root = midFormatted;
+        currentA = nextA;
+        currentB = nextB;
+        root = mid;
     }
 
     return {
         finalRoot: root,
         table: iterationTable,
-        totalSteps: iterationTable.length
+        totalSteps: iterationTable.length,
+        errorBound: finalErrorBound
     };
 }
 

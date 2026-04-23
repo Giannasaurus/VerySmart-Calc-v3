@@ -131,7 +131,7 @@
                 <input id="rootFunction" type="text" placeholder="e.g., x^3 - x - 2">
                 <div class="input-row">
                     <label for="rootSigDigits">Significant digits:</label>
-                    <input id="rootSigDigits" type="number" placeholder="5" value="5">
+                    <input id="rootSigDigits" type="number" placeholder="10" value="10">
                 </div>
                 <div class="subsection">
                     <label>Arithmetic:</label><br>
@@ -149,12 +149,15 @@
                     <input id="bisectionA" type="number" step="any" placeholder="1">
                     <label for="bisectionB">b</label>
                     <input id="bisectionB" type="number" step="any" placeholder="2">
+                    <label for="bisectionErrorConstraint">Error constraint</label>
+                    <input id="bisectionErrorConstraint" type="number" step="any" placeholder="0.0001" value="0.0001">
                     <label for="bisectionTolerance">Tolerance</label>
                     <input id="bisectionTolerance" type="number" step="any" placeholder="0.0001" value="0.0001">
                 </div>
                 <button id="runBisectionBtn" type="button">Run Bisection</button>
                 <div class="result-row"><label>Root:</label> <input id="bisectionRoot" type="text" title="Bisection root" readonly></div>
                 <div class="result-row"><label>Steps:</label> <input id="bisectionSteps" type="text" title="Bisection steps" readonly></div>
+                <div class="result-row"><label>Error Bound:</label> <input id="bisectionErrorBound" type="text" title="Relative bisection error bound" readonly></div>
                 <div class="table-wrap">
                     <table>
                         <thead>
@@ -164,6 +167,7 @@
                                 <th>b</th>
                                 <th>mid</th>
                                 <th>f(mid)</th>
+                                <th>|b-a|/|a|</th>
                             </tr>
                         </thead>
                         <tbody id="bisectionTable"></tbody>

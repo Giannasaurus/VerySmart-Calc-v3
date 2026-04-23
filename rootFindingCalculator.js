@@ -15,6 +15,8 @@ function handleRunBisection() {
     const a = parseFloat(document.getElementById('bisectionA').value);
     const b = parseFloat(document.getElementById('bisectionB').value);
     const tol = parseFloat(document.getElementById('bisectionTolerance').value);
+    const rawErrorConstraint = document.getElementById('bisectionErrorConstraint').value.trim();
+    const errorConstraint = rawErrorConstraint === '' ? undefined : parseFloat(rawErrorConstraint);
 
     if (!Number.isFinite(a) || !Number.isFinite(b) || a === b) {
         showMethodError('Please enter two different finite endpoints.', 'bisectionRoot', 'bisectionSteps', 'bisectionTable');
@@ -24,6 +26,10 @@ function handleRunBisection() {
         showMethodError('Please enter a positive tolerance.', 'bisectionRoot', 'bisectionSteps', 'bisectionTable');
         return;
     }
+    if (errorConstraint !== undefined && (!Number.isFinite(errorConstraint) || errorConstraint <= 0)) {
+        showMethodError('Please enter a positive error constraint.', 'bisectionRoot', 'bisectionSteps', 'bisectionTable');
+        return;
+    }
 
     const methodResult = runBisection(
         settings.f,
@@ -31,10 +37,12 @@ function handleRunBisection() {
         Math.max(a, b),
         settings.sigs,
         settings.mode,
-        tol
+        tol,
+        errorConstraint
     );
 
-    displayMethodResult(methodResult, 'bisectionRoot', 'bisectionSteps', 'bisectionTable', ['iter', 'a', 'b', 'mid', 'fMid']);
+    displayMethodResult(methodResult, 'bisectionRoot', 'bisectionSteps', 'bisectionTable', ['iter', 'a', 'b', 'mid', 'fMid', 'errorBound']);
+    document.getElementById('bisectionErrorBound').value = methodResult.errorBound !== undefined ? methodResult.errorBound : '';
 }
 
 function handleRunNewton() {
@@ -90,6 +98,9 @@ function showMethodError(message, rootId, stepsId, tableId) {
     document.getElementById(rootId).value = message;
     document.getElementById(stepsId).value = '';
     clearTable(tableId);
+    if (rootId === 'bisectionRoot') {
+        document.getElementById('bisectionErrorBound').value = '';
+    }
 }
 
 function displayMethodResult(methodResult, rootId, stepsId, tableId, keys) {

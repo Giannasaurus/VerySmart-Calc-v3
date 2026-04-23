@@ -123,8 +123,92 @@
                 <div class="result-row"><label>IEEE Interpretation:</label> <input id="binaryIEEEResult" type="text" title="IEEE 754 interpretation" readonly></div>
             </div>
         </section>
+        <section id="rootFindingSection">
+            <h2>Root Finding Methods</h2>
+            <fieldset>
+                <legend>Function</legend>
+                <label for="rootFunction">Enter f(x):</label><br>
+                <input id="rootFunction" type="text" placeholder="e.g., x^3 - x - 2">
+                <div class="input-row">
+                    <label for="rootSigDigits">Significant digits:</label>
+                    <input id="rootSigDigits" type="number" placeholder="5" value="5">
+                </div>
+                <div class="subsection">
+                    <label>Arithmetic:</label><br>
+                    <input id="rootRound" value="round" name="rootMethod" type="radio" checked>
+                    <label for="rootRound">Round</label>
+                    <input id="rootChop" value="chop" name="rootMethod" type="radio">
+                    <label for="rootChop">Chop</label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Bisection Method</legend>
+                <div class="method-grid">
+                    <label for="bisectionA">a</label>
+                    <input id="bisectionA" type="number" step="any" placeholder="1">
+                    <label for="bisectionB">b</label>
+                    <input id="bisectionB" type="number" step="any" placeholder="2">
+                    <label for="bisectionTolerance">Tolerance</label>
+                    <input id="bisectionTolerance" type="number" step="any" placeholder="0.0001" value="0.0001">
+                </div>
+                <button id="runBisectionBtn" type="button">Run Bisection</button>
+                <div class="result-row"><label>Root:</label> <input id="bisectionRoot" type="text" title="Bisection root" readonly></div>
+                <div class="result-row"><label>Steps:</label> <input id="bisectionSteps" type="text" title="Bisection steps" readonly></div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>i</th>
+                                <th>a</th>
+                                <th>b</th>
+                                <th>mid</th>
+                                <th>f(mid)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bisectionTable"></tbody>
+                    </table>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Newton's Method</legend>
+                <div class="method-grid">
+                    <label for="newtonInitial">x0</label>
+                    <input id="newtonInitial" type="number" step="any" placeholder="1.5">
+                    <label for="newtonStopValue">Stop value</label>
+                    <input id="newtonStopValue" type="number" step="any" placeholder="0.0001" value="0.0001">
+                    <label for="newtonStopType">Stop by</label>
+                    <select id="newtonStopType">
+                        <option value="tol">Tolerance</option>
+                        <option value="iter">Iterations</option>
+                    </select>
+                </div>
+                <button id="runNewtonBtn" type="button">Run Newton</button>
+                <div class="result-row"><label>Root:</label> <input id="newtonRoot" type="text" title="Newton root" readonly></div>
+                <div class="result-row"><label>Steps:</label> <input id="newtonSteps" type="text" title="Newton steps" readonly></div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>i</th>
+                                <th>x</th>
+                                <th>f(x)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="newtonTable"></tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </section>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.1/math.js"></script>
+    <script src="rootFindingMethods.js"></script>
+    <script src="calculatorUtils.js"></script>
+    <script src="computationCalculator.js"></script>
+    <script src="errorEvaluationCalculator.js"></script>
+    <script src="binaryConversionCalculator.js"></script>
+    <script src="rootFindingCalculator.js"></script>
     <script src="script.js"></script>
 </body>
 

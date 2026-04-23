@@ -47,7 +47,7 @@ header {
     margin: 0 auto;
 }
 
-#computationSection, #section4, #section5 {
+#computationSection, #section4, #section5, #rootFindingSection {
     color: #fff;
     background-color: blue;
     border-radius: 40px;
@@ -104,11 +104,22 @@ input[type='number'] {
     width: 120px;
 }
 
+select {
+    background-color: #fff;
+    border: none;
+    border-radius: 25px;
+    height: 25px;
+    padding: 0 1em;
+    max-width: 100%;
+    font-family: inherit;
+    color: blue;
+}
+
 #kDigits {
     width: 100px;
 }
 
-#evaluateKDigitBtn, #computeBtn, #applyChopRoundBtn {
+#evaluateKDigitBtn, #computeBtn, #applyChopRoundBtn, #runBisectionBtn, #runNewtonBtn {
     margin-top: 0.75rem;
     height: auto;
     padding: 0.5em 1em;
@@ -188,7 +199,7 @@ input::-webkit-inner-spin-button {
         padding: 0 0.5em;
     }
     
-    #section1, #section3, #section4, #section5 {
+    #computationSection, #section4, #section5, #rootFindingSection {
         padding: 1em 1.5em;
         border-radius: 30px;
         min-width: auto;
@@ -219,7 +230,7 @@ input::-webkit-inner-spin-button {
         width: 12em;
     }
     
-    #section1, #section3, #section4, #section5 {
+    #computationSection, #section4, #section5, #rootFindingSection {
         padding: 1em;
         border-radius: 20px;
     }
@@ -287,4 +298,56 @@ input::-webkit-inner-spin-button {
 #section2 fieldset {
     flex: 1 1 auto;
     margin-bottom: 0;
+}
+
+#rootFindingSection {
+    flex-basis: 620px;
+}
+
+.method-grid {
+    display: grid;
+    grid-template-columns: max-content minmax(90px, 1fr);
+    gap: 0.6em 0.75em;
+    align-items: center;
+    margin-bottom: 0.75em;
+}
+
+.method-grid label {
+    margin-right: 0;
+}
+
+.method-grid input,
+.method-grid select {
+    width: 100%;
+}
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 0.75em;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #fff;
+    min-width: 420px;
+}
+
+th,
+td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    padding: 0.45em 0.5em;
+    text-align: right;
+    white-space: nowrap;
+}
+
+th:first-child,
+td:first-child {
+    text-align: left;
+}
+
+th {
+    font-weight: 700;
+    background-color: rgba(255, 255, 255, 0.12);
 }

@@ -53,6 +53,25 @@ function maximumAbsoluteError(P, t, method) {
 
 function buildSingleVariableFunction(expr) {
     const node = math.parse(expr);
+    validateSingleVariableNode(node);
+    const compiled = node.compile();
+
+    return (x) => evaluateSingleVariableCompiled(compiled, x);
+}
+
+function buildSingleVariableDerivative(expr) {
+    const node = math.parse(expr);
+    validateSingleVariableNode(node);
+    const derivativeNode = math.derivative(node, 'x');
+    const compiled = derivativeNode.compile();
+
+    return {
+        expression: derivativeNode.toString(),
+        evaluate: (x) => evaluateSingleVariableCompiled(compiled, x)
+    };
+}
+
+function validateSingleVariableNode(node) {
     const symbols = new Set();
 
     node.traverse((child) => {
@@ -72,21 +91,20 @@ function buildSingleVariableFunction(expr) {
             throw new Error(`Unsupported symbol: ${symbol}. Use x as the variable.`);
         }
     }
+}
 
-    const compiled = node.compile();
-    return (x) => {
-        const scopedX = math.isBigNumber(x) ? x : math.bignumber(String(x));
-        const value = compiled.evaluate({ x: scopedX });
+function evaluateSingleVariableCompiled(compiled, x) {
+    const scopedX = math.isBigNumber(x) ? x : math.bignumber(String(x));
+    const value = compiled.evaluate({ x: scopedX });
 
-        if (typeof value === 'number') {
-            return value;
-        }
-        if (math.isBigNumber(value)) {
-            return Number(value.toString());
-        }
+    if (typeof value === 'number') {
+        return value;
+    }
+    if (math.isBigNumber(value)) {
+        return Number(value.toString());
+    }
 
-        return Number(value);
-    };
+    return Number(value);
 }
 
 function clearTable(tableId) {

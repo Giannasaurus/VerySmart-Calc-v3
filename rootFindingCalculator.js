@@ -72,7 +72,7 @@ function handleRunNewton() {
         return;
     }
 
-    const methodResult = runNewton(settings.f, x0, settings.sigs, settings.mode, stopVal, stopType);
+    const methodResult = runNewton(settings.f, settings.derivative.evaluate, x0, settings.sigs, settings.mode, stopVal, stopType);
     displayMethodResult(methodResult, 'newtonRoot', 'newtonSteps', 'newtonTable', ['iter', 'x', 'fx', 'derivative', 'correction', 'nextX']);
 }
 
@@ -132,7 +132,9 @@ function getRootFindingSettings() {
     }
 
     return {
+        expr,
         f: buildSingleVariableFunction(expr),
+        derivative: buildSingleVariableDerivative(expr),
         sigs,
         mode
     };

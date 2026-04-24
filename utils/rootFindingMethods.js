@@ -93,11 +93,10 @@ function runBisection(f, a, b, sigs, mode, tol, errorConstraint) {
     };
 }
 
-// NEWTONS METHOD f: function, x0: initial guess, sigs: digits, mode: 'round'/'chop', stopVal: tolerance or iterations, stopType: 'tol' or 'iter'
-function runNewton(f, x0, sigs, mode, stopVal, stopType) {
+// NEWTONS METHOD f: function, derivative: f'(x), x0: initial guess, sigs: digits, mode: 'round'/'chop', stopVal: tolerance or iterations, stopType: 'tol' or 'iter'
+function runNewton(f, derivative, x0, sigs, mode, stopVal, stopType) {
     let iterationTable = [];
     let x = x0;
-    const h = 0.00000001; // Small number used to calculate the slope (derivative)
     if (!Number.isFinite(x)) {
         return { error: "Initial guess must be finite." };
     }
@@ -118,8 +117,8 @@ function runNewton(f, x0, sigs, mode, stopVal, stopType) {
             break;
         }
 
-        // 1. Find the slope (Derivative) using the formula: [f(x + h) - f(x)] / h
-        let slope = (f(x + h) - fx) / h;
+        // Use the symbolic derivative so the table follows the classroom workflow.
+        let slope = derivative(x);
 		if (!Number.isFinite(slope) || Math.abs(slope) < Number.EPSILON) {
             return { error: "Slope is zero. The method cannot continue.", table: iterationTable };
         }

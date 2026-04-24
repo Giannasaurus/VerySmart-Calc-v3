@@ -304,6 +304,7 @@ input::-webkit-inner-spin-button {
     flex-basis: 620px;
 }
 
+
 .method-grid {
     display: grid;
     grid-template-columns: max-content minmax(90px, 1fr);

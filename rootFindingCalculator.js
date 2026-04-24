@@ -73,7 +73,7 @@ function handleRunNewton() {
     }
 
     const methodResult = runNewton(settings.f, x0, settings.sigs, settings.mode, stopVal, stopType);
-    displayMethodResult(methodResult, 'newtonRoot', 'newtonSteps', 'newtonTable', ['iter', 'x', 'fx']);
+    displayMethodResult(methodResult, 'newtonRoot', 'newtonSteps', 'newtonTable', ['iter', 'x', 'fx', 'derivative', 'correction', 'nextX']);
 }
 
 function handleRunFixedPoint() {

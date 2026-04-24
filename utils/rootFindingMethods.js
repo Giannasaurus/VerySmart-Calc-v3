@@ -109,18 +109,11 @@ function runNewton(f, x0, sigs, mode, stopVal, stopType) {
     let maxLoop = (stopType === 'iter') ? Math.floor(stopVal) : 100;
     maxLoop = Math.max(1, Math.min(maxLoop, 1000));
 
-    for (let i = 0; i <= maxLoop; i++) {
+    for (let i = 0; i < maxLoop; i++) {
         let fx = f(x);
         if (!Number.isFinite(fx)) {
             return { error: "Function became non-finite during Newton iteration.", table: iterationTable };
         }
-        let fxFormatted = formatValue(fx, sigs, mode);
-        let xFormatted = formatValue(x, sigs, mode);
-        iterationTable.push({
-            iter: i,
-            x: xFormatted,
-            fx: fxFormatted
-        });
         if (stopType === 'tol' && Math.abs(fx) < stopVal) {
             break;
         }
@@ -132,11 +125,31 @@ function runNewton(f, x0, sigs, mode, stopVal, stopType) {
         }
 
         // 2. The formula: nextX = x - f(x) / f'(x)
-        x = x - (fx / slope);
+        let correction = fx / slope;
+        let nextX = x - correction;
+        iterationTable.push({
+            iter: i + 1,
+            x: formatValue(x, sigs, mode),
+            fx: formatValue(fx, sigs, mode),
+            derivative: formatValue(slope, sigs, mode),
+            correction: formatValue(correction, sigs, mode),
+            nextX: formatValue(nextX, sigs, mode)
+        });
+
+        x = nextX;
         if (!Number.isFinite(x)) {
             return { error: "Newton iteration produced a non-finite value.", table: iterationTable };
         }
     }
+
+    iterationTable.push({
+        iter: iterationTable.length + 1,
+        x: formatValue(x, sigs, mode),
+        fx: '',
+        derivative: '',
+        correction: '',
+        nextX: ''
+    });
 
     return {
         finalRoot: formatValue(x, sigs, mode),

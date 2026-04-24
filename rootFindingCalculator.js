@@ -1,6 +1,7 @@
 function initializeRootFindingCalculators() {
     document.getElementById('runBisectionBtn').addEventListener('click', handleRunBisection);
     document.getElementById('runNewtonBtn').addEventListener('click', handleRunNewton);
+    document.getElementById('runFixedPointBtn').addEventListener('click', handleRunFixedPoint);
 }
 
 function handleRunBisection() {
@@ -73,6 +74,49 @@ function handleRunNewton() {
 
     const methodResult = runNewton(settings.f, x0, settings.sigs, settings.mode, stopVal, stopType);
     displayMethodResult(methodResult, 'newtonRoot', 'newtonSteps', 'newtonTable', ['iter', 'x', 'fx']);
+}
+
+function handleRunFixedPoint() {
+    let settings;
+    try {
+        settings = getRootFindingSettings();
+    } catch (err) {
+        showMethodError(err.message, 'fixedPointRoot', 'fixedPointSteps', 'fixedPointTable');
+        return;
+    }
+
+    const gExpr = document.getElementById('fixedPointFunction').value.trim();
+    const x0 = parseFloat(document.getElementById('fixedPointInitial').value);
+    const stopVal = parseFloat(document.getElementById('fixedPointStopValue').value);
+    const stopType = document.getElementById('fixedPointStopType').value;
+
+    if (!gExpr) {
+        showMethodError('Please enter an iteration function g(x).', 'fixedPointRoot', 'fixedPointSteps', 'fixedPointTable');
+        return;
+    }
+    if (!Number.isFinite(x0)) {
+        showMethodError('Please enter a finite initial guess.', 'fixedPointRoot', 'fixedPointSteps', 'fixedPointTable');
+        return;
+    }
+    if (!Number.isFinite(stopVal) || stopVal <= 0) {
+        showMethodError('Please enter a positive stopping value.', 'fixedPointRoot', 'fixedPointSteps', 'fixedPointTable');
+        return;
+    }
+    if (stopType === 'iter' && !Number.isInteger(stopVal)) {
+        showMethodError('Iterations must be a whole number.', 'fixedPointRoot', 'fixedPointSteps', 'fixedPointTable');
+        return;
+    }
+
+    let g;
+    try {
+        g = buildSingleVariableFunction(gExpr);
+    } catch (err) {
+        showMethodError(err.message, 'fixedPointRoot', 'fixedPointSteps', 'fixedPointTable');
+        return;
+    }
+
+    const methodResult = runFixedPoint(settings.f, g, x0, settings.sigs, settings.mode, stopVal, stopType);
+    displayMethodResult(methodResult, 'fixedPointRoot', 'fixedPointSteps', 'fixedPointTable', ['iter', 'x', 'gx', 'error']);
 }
 
 function getRootFindingSettings() {

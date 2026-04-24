@@ -204,6 +204,39 @@
                     </table>
                 </div>
             </fieldset>
+
+            <fieldset>
+                <legend>Fixed-Point Iteration</legend>
+                <label for="fixedPointFunction">Enter g(x):</label><br>
+                <input id="fixedPointFunction" type="text" placeholder="e.g., (x + 2)^(1/3)">
+                <div class="method-grid">
+                    <label for="fixedPointInitial">x0</label>
+                    <input id="fixedPointInitial" type="number" step="any" placeholder="1.5">
+                    <label for="fixedPointStopValue">Stop value</label>
+                    <input id="fixedPointStopValue" type="number" step="any" placeholder="0.0001" value="0.0001">
+                    <label for="fixedPointStopType">Stop by</label>
+                    <select id="fixedPointStopType">
+                        <option value="tol">Tolerance</option>
+                        <option value="iter">Iterations</option>
+                    </select>
+                </div>
+                <button id="runFixedPointBtn" type="button">Run Fixed-Point</button>
+                <div class="result-row"><label>Root:</label> <input id="fixedPointRoot" type="text" title="Fixed-point root" readonly></div>
+                <div class="result-row"><label>Steps:</label> <input id="fixedPointSteps" type="text" title="Fixed-point steps" readonly></div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>i</th>
+                                <th>x(i)</th>
+                                <th>g(x(i))</th>
+                                <th>|x(i+1) - x(i)|</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fixedPointTable"></tbody>
+                    </table>
+                </div>
+            </fieldset>
         </section>
         <section id="lagrangeSection">
             <h2>Lagrange Interpolation</h2>

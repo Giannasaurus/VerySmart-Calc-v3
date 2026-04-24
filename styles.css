@@ -119,7 +119,7 @@ select {
     width: 100px;
 }
 
-#evaluateKDigitBtn, #computeBtn, #applyChopRoundBtn, #runBisectionBtn, #runNewtonBtn, #runLagrangeBtn {
+#evaluateKDigitBtn, #computeBtn, #applyChopRoundBtn, #runBisectionBtn, #runNewtonBtn, #runFixedPointBtn, #runLagrangeBtn {
     margin-top: 0.75rem;
     height: auto;
     padding: 0.5em 1em;

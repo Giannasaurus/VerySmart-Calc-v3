@@ -143,3 +143,55 @@ function runNewton(f, x0, sigs, mode, stopVal, stopType) {
         table: iterationTable
     };
 }
+
+// FIXED-POINT ITERATION f: original function, g: iteration function, x0: initial guess,
+// sigs: digits, mode: 'round'/'chop', stopVal: tolerance or iterations, stopType: 'tol' or 'iter'
+function runFixedPoint(f, g, x0, sigs, mode, stopVal, stopType) {
+    let iterationTable = [];
+    let x = x0;
+
+    if (!Number.isFinite(x)) {
+        return { error: "Initial guess must be finite." };
+    }
+    if (stopVal <= 0) {
+        return { error: "Stopping value must be greater than zero." };
+    }
+
+    let maxLoop = (stopType === 'iter') ? Math.floor(stopVal) : 100;
+    maxLoop = Math.max(1, Math.min(maxLoop, 1000));
+
+    for (let i = 0; i < maxLoop; i++) {
+        const gxRaw = g(x);
+        if (!Number.isFinite(gxRaw)) {
+            return { error: "g(x) became non-finite during fixed-point iteration.", table: iterationTable };
+        }
+
+        const nextX = formatValue(gxRaw, sigs, mode);
+        const error = Math.abs(nextX - x);
+        iterationTable.push({
+            iter: i,
+            x: formatValue(x, sigs, mode),
+            gx: nextX,
+            error: formatValue(error, sigs, mode)
+        });
+
+        if (stopType === 'tol' && error < stopVal) {
+            return {
+                finalRoot: nextX,
+                table: iterationTable
+            };
+        }
+
+        x = nextX;
+    }
+
+    const fx = f(x);
+    if (!Number.isFinite(fx)) {
+        return { error: "Function became non-finite while checking the fixed-point result.", table: iterationTable };
+    }
+
+    return {
+        finalRoot: formatValue(x, sigs, mode),
+        table: iterationTable
+    };
+}

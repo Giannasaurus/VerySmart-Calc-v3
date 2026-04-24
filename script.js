@@ -4,3 +4,4 @@ initializeComputationCalculator();
 initializeErrorEvaluationCalculator();
 initializeBinaryConversionCalculator();
 initializeRootFindingCalculators();
+initializeLagrangeInterpolationCalculator();

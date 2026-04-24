@@ -205,6 +205,23 @@
                 </div>
             </fieldset>
         </section>
+        <section id="lagrangeSection">
+            <h2>Lagrange Interpolation</h2>
+            <fieldset>
+                <legend>Data Points</legend>
+                <label for="lagrangePoints">Enter points as `x,y; x,y; ...`</label><br>
+                <input id="lagrangePoints" type="text" placeholder="e.g., 1,1; 2,4; 3,9">
+                <div class="input-row">
+                    <label for="lagrangeXValue">Evaluate at x:</label>
+                    <input id="lagrangeXValue" type="number" step="any" placeholder="optional">
+                </div>
+                <button id="runLagrangeBtn" type="button">Build Polynomial</button>
+            </fieldset>
+            <div class="result-section">
+                <div class="result-row"><label>Polynomial:</label> <input id="lagrangePolynomialResult" type="text" title="Lagrange interpolation polynomial" readonly></div>
+                <div class="result-row"><label>Interpolated Value:</label> <input id="lagrangeValueResult" type="text" title="Interpolated value at x" readonly></div>
+            </div>
+        </section>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.1/math.js"></script>
     <script src="utils/rootFindingMethods.js"></script>
@@ -213,6 +230,7 @@
     <script src="errorEvaluationCalculator.js"></script>
     <script src="binaryConversionCalculator.js"></script>
     <script src="rootFindingCalculator.js"></script>
+    <script src="lagrangeInterpolationCalculator.js"></script>
     <script src="script.js"></script>
 </body>
 

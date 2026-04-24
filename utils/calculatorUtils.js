@@ -75,8 +75,17 @@ function buildSingleVariableFunction(expr) {
 
     const compiled = node.compile();
     return (x) => {
-        const value = compiled.evaluate({ x });
-        return typeof value === 'number' ? value : Number(value);
+        const scopedX = math.isBigNumber(x) ? x : math.bignumber(String(x));
+        const value = compiled.evaluate({ x: scopedX });
+
+        if (typeof value === 'number') {
+            return value;
+        }
+        if (math.isBigNumber(value)) {
+            return Number(value.toString());
+        }
+
+        return Number(value);
     };
 }
 

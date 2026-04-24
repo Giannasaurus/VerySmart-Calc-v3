@@ -1,7 +1,7 @@
 function initializeRootFindingCalculators() {
-    document.getElementById('runBisectionBtn').addEventListener('click', handleRunBisection);
-    document.getElementById('runNewtonBtn').addEventListener('click', handleRunNewton);
-    document.getElementById('runFixedPointBtn').addEventListener('click', handleRunFixedPoint);
+    attachIfPresent('runBisectionBtn', handleRunBisection);
+    attachIfPresent('runNewtonBtn', handleRunNewton);
+    attachIfPresent('runFixedPointBtn', handleRunFixedPoint);
 }
 
 function handleRunBisection() {
@@ -57,7 +57,7 @@ function handleRunNewton() {
 
     const x0 = parseFloat(document.getElementById('newtonInitial').value);
     const stopVal = parseFloat(document.getElementById('newtonStopValue').value);
-    const stopType = document.getElementById('newtonStopType').value;
+    const stopType = normalizeStopType(document.getElementById('newtonStopType').value);
 
     if (!Number.isFinite(x0)) {
         showMethodError('Please enter a finite initial guess.', 'newtonRoot', 'newtonSteps', 'newtonTable');
@@ -88,7 +88,7 @@ function handleRunFixedPoint() {
     const gExpr = document.getElementById('fixedPointFunction').value.trim();
     const x0 = parseFloat(document.getElementById('fixedPointInitial').value);
     const stopVal = parseFloat(document.getElementById('fixedPointStopValue').value);
-    const stopType = document.getElementById('fixedPointStopType').value;
+    const stopType = normalizeStopType(document.getElementById('fixedPointStopType').value);
 
     if (!gExpr) {
         showMethodError('Please enter an iteration function g(x).', 'fixedPointRoot', 'fixedPointSteps', 'fixedPointTable');
@@ -136,6 +136,26 @@ function getRootFindingSettings() {
         sigs,
         mode
     };
+}
+
+function normalizeStopType(stopType) {
+    const normalized = String(stopType).trim().toLowerCase();
+
+    if (normalized === 'tol' || normalized === 'tolerance') {
+        return 'tol';
+    }
+    if (normalized === 'iter' || normalized === 'iteration' || normalized === 'iterations') {
+        return 'iter';
+    }
+
+    return normalized;
+}
+
+function attachIfPresent(id, handler) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.addEventListener('click', handler);
+    }
 }
 
 function showMethodError(message, rootId, stepsId, tableId) {
